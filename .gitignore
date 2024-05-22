@@ -1,6 +1,6 @@
 *
 !.gitignore
-!README
+!README.md
 !Makefile
 !includes/*
 !src/*
