@@ -2,6 +2,7 @@
 !/**/
 !*.*
 
+!Makefile
 compile_flags.txt
 *.o
 
