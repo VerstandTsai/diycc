@@ -1,23 +1,22 @@
-DIYCC: Do-It-Yourself C Compiler
----
+# DIYCC: Do-It-Yourself C Compiler
 
-# Description
+## Description
 
 This project is about making a C compiler from scratch.
 
-# Objectives
+## Objectives
 
 * Make a lexer (turning text into tokens)
 * Make a parser (generate syntax trees)
 * Generate assembly code
 
-# Notes
+## Notes
 
-## List of Tokens
+### List of Tokens
 
 * Identifiers (function names, variable names, etc.)
 * Number literals
-* Special symbols (`=`, `+`, `-`, `*`, `/`, (`, `)`, `[`, `]`, `{`, `}`, etc.)
+* Special symbols (`=`, `+`, `-`, `*`, `/`, `(`, `)`, `[`, `]`, `{`, `}`, etc.)
 * Keyword `int`
 * Keyword `return`
 
