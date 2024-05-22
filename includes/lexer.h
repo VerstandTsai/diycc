@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LEXER_H
+#define LEXER_H
 
 #define MAX_ID_LENGTH 32
 
@@ -41,4 +42,6 @@ enum LexerError {
 
 void lexer_error(enum LexerError error);
 struct TokenStream lex(char code[]);
+
+#endif // LEXER_H
 
