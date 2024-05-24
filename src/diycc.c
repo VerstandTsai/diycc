@@ -1,4 +1,5 @@
 #include "lexer.h"
+#include "parser.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,6 +19,9 @@ char *read_file(char filename[]) {
 void compile(char code[]) {
     struct TokenStream tokens = lex(code);
     print_tokens(tokens);
+    struct SyntaxTree ast = parse(tokens);
+    print_tree(ast);
+    free_tree(ast);
     free_tokens(tokens);
 }
 

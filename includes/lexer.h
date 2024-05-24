@@ -15,7 +15,19 @@ enum TokenType {
     TK_RETURN,
     END_KEYWORDS,
     TK_ID,
-    TK_NUMBER
+    TK_NUMBER,
+    TK_PROGRAM,
+    TK_FUNCDEF,
+    TK_TYPESPEC,
+    TK_BODY,
+    TK_STATEMENT,
+    TK_VARDEC, // 'int a;'
+    TK_VARINIT, // 'int a = 0;'
+    TK_VAR,
+    TK_ASSIGNMENT, // 'a = b'
+    TK_ASSOP, // '=', '+=', '*=' etc.
+    TK_EXP, // Anything that returns a value
+    TK_RETST // 'return a;'
 };
 
 struct Token {

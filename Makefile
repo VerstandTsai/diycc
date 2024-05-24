@@ -7,7 +7,7 @@ RM = rm
 
 all: diycc
 
-diycc: lexer.o
+diycc: lexer.o parser.o
 	$(CC) $(CFLAGS) -o $@ $(SRC)/diycc.c $^
 
 %.o: $(SRC)/%.c $(INC)/%.h
