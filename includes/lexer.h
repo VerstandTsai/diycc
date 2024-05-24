@@ -11,23 +11,32 @@ enum TokenType {
     TK_LBRACE, // '{'
     TK_RBRACE, // '}'
     END_SYMBOLS,
+
     TK_INT,
     TK_RETURN,
     END_KEYWORDS,
+
     TK_ID,
     TK_NUMBER,
-    TK_PROGRAM,
-    TK_FUNCDEF,
-    TK_TYPESPEC,
-    TK_BODY,
-    TK_STATEMENT,
+    END_BASICS,
+
+    TK_FUNCDEF, // 'int func() {}'
     TK_VARDEC, // 'int a;'
     TK_VARINIT, // 'int a = 0;'
-    TK_VAR,
     TK_ASSIGNMENT, // 'a = b'
+    TK_RETST, // 'return a;'
+    END_SEQ,
+
+    TK_TYPESPEC,
+    TK_STATEMENT,
+    TK_EXP, // Things that return a value
+    TK_VAR, // Things that can both return and receive a value
     TK_ASSOP, // '=', '+=', '*=' etc.
-    TK_EXP, // Anything that returns a value
-    TK_RETST // 'return a;'
+    END_CANDS,
+
+    TK_PROGRAM,
+    TK_BODY,
+    END_REPCANDS
 };
 
 struct Token {

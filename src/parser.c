@@ -5,6 +5,108 @@
 #include <stdlib.h>
 #include <string.h>
 
+enum TokenType prog_repcands[] = {
+    TK_FUNCDEF,
+    END_REPCANDS
+};
+
+enum TokenType body_repcands[] = {
+    TK_STATEMENT,
+    END_REPCANDS
+};
+
+enum TokenType *repcands_table[] = {
+    prog_repcands,
+    body_repcands
+};
+
+enum TokenType typespec_cands[] = {
+    TK_INT,
+    END_CANDS
+};
+
+enum TokenType statement_cands[] = {
+    TK_VARDEC,
+    TK_VARINIT,
+    TK_ASSIGNMENT,
+    TK_RETST,
+    END_CANDS
+};
+
+enum TokenType exp_cands[] = {
+    TK_VAR,
+    TK_NUMBER,
+    END_CANDS
+};
+
+enum TokenType var_cands[] = {
+    TK_ID,
+    END_CANDS
+};
+
+enum TokenType assop_cands[] = {
+    TK_ASSIGN,
+    END_CANDS
+};
+
+enum TokenType *cand_table[] = {
+    typespec_cands,
+    statement_cands,
+    exp_cands,
+    var_cands,
+    assop_cands
+};
+
+enum TokenType funcseq[] = {
+    TK_TYPESPEC,
+    TK_ID,
+    TK_LPAREN,
+    TK_RPAREN,
+    TK_LBRACE,
+    TK_BODY,
+    TK_RBRACE,
+    END_SEQ
+};
+
+enum TokenType vardecseq[] = {
+    TK_TYPESPEC,
+    TK_ID,
+    TK_SEMICOLON,
+    END_SEQ
+};
+
+enum TokenType varinitseq[] = {
+    TK_TYPESPEC,
+    TK_ID,
+    TK_ASSIGN,
+    TK_EXP,
+    TK_SEMICOLON,
+    END_SEQ
+};
+
+enum TokenType assseq[] = {
+    TK_VAR,
+    TK_ASSOP,
+    TK_EXP,
+    TK_SEMICOLON,
+    END_SEQ
+};
+
+enum TokenType retstseq[] = {
+    TK_RETURN,
+    TK_EXP,
+    TK_SEMICOLON,
+    END_SEQ
+};
+
+enum TokenType *seqtable[] = {
+    funcseq,
+    vardecseq,
+    varinitseq,
+    assseq,
+    retstseq
+};
+
 struct ASTNode *new_node(enum TokenType type) {
     struct ASTNode *node = (struct ASTNode*)malloc(sizeof(struct ASTNode));
     node->type = type;
@@ -71,196 +173,59 @@ int isdelim(enum TokenType type) {
 
 struct ASTNode *match(enum TokenType type, struct Token **token_ptr) {
     if (!*token_ptr) return NULL;
-    enum TokenType basic_types[] = {
-        TK_INT
-    };
-    enum TokenType funcseq[] = {
-        TK_TYPESPEC,
-        TK_ID,
-        TK_LPAREN,
-        TK_RPAREN,
-        TK_LBRACE,
-        TK_BODY,
-        TK_RBRACE
-    };
-    enum TokenType statement_types[] = {
-        TK_VARDEC,
-        TK_VARINIT,
-        TK_ASSIGNMENT,
-        TK_RETST
-    };
-    enum TokenType vardecseq[] = {
-        TK_TYPESPEC,
-        TK_ID,
-        TK_SEMICOLON
-    };
-    enum TokenType varinitseq[] = {
-        TK_TYPESPEC,
-        TK_ID,
-        TK_ASSIGN,
-        TK_EXP,
-        TK_SEMICOLON
-    };
-    enum TokenType assseq[] = {
-        TK_VAR,
-        TK_ASSOP,
-        TK_EXP,
-        TK_SEMICOLON
-    };
-    enum TokenType retstseq[] = {
-        TK_RETURN,
-        TK_EXP,
-        TK_SEMICOLON
-    };
-    enum TokenType assops[] = {
-        TK_ASSIGN
-    };
-    enum TokenType var_types[] = {
-        TK_ID
-    };
-    enum TokenType exp_types[] = {
-        TK_VAR,
-        TK_NUMBER
-    };
-    struct ASTNode *root;
-    struct ASTNode *child;
-    struct SyntaxTree temp_tree; // Tree for calling free_tree
     struct Token *token_ptr_backup = *token_ptr;
-    switch (type) {
-    case TK_PROGRAM:
-        root = new_node(TK_PROGRAM);
-        while (1) {
-            child = match(TK_FUNCDEF, token_ptr);
-            if (!child) break;
-            add_child(root, child);
-        }
-        return root;
-    case TK_FUNCDEF:
-        root = new_node(TK_FUNCDEF);
-        for (int i=0; i<7; i++) {
-            child = match(funcseq[i], token_ptr);
-            if (!child) {
-                *token_ptr = token_ptr_backup;
-                temp_tree.root = root;
-                free_tree(temp_tree);
-                return NULL;
-            }
-            if (isdelim(funcseq[i])) continue;
-            add_child(root, child);
-        }
-        return root;
-    case TK_TYPESPEC:;
-        for (int i=0; i<1; i++) {
-            root = match(basic_types[i], token_ptr);
-            if (root) return root;
-        }
-        return NULL;
-    case TK_BODY:
-        root = new_node(TK_BODY);
-        while (1) {
-            child = match(TK_STATEMENT, token_ptr);
-            if (!child) break;
-            add_child(root, child);
-        }
-        return root;
-    case TK_STATEMENT:
-        for (int i=0; i<4; i++) {
-            root = match(statement_types[i], token_ptr);
-            if (root) return root;
-        }
-        return NULL;
-    case TK_VARDEC:
-        root = new_node(TK_VARDEC);
-        for (int i=0; i<3; i++) {
-            child = match(vardecseq[i], token_ptr);
-            if (!child) {
-                *token_ptr = token_ptr_backup;
-                temp_tree.root = root;
-                free_tree(temp_tree);
-                return NULL;
-            }
-            if (isdelim(vardecseq[i])) continue;
-            add_child(root, child);
-        }
-        return root;
-    case TK_VARINIT:
-        root = new_node(TK_VARINIT);
-        for (int i=0; i<5; i++) {
-            child = match(varinitseq[i], token_ptr);
-            if (!child) {
-                *token_ptr = token_ptr_backup;
-                temp_tree.root = root;
-                free_tree(temp_tree);
-                return NULL;
-            }
-            if (isdelim(varinitseq[i]) || varinitseq[i] == TK_ASSIGN) continue;
-            add_child(root, child);
-        }
-        return root;
-    case TK_VAR:
-        for (int i=0; i<1; i++) {
-            root = match(var_types[i], token_ptr);
-            if (root) return root;
-        }
-        return NULL;
-    case TK_ASSIGNMENT:
-        root = new_node(TK_ASSIGNMENT);
-        for (int i=0; i<4; i++) {
-            child = match(assseq[i], token_ptr);
-            if (!child) {
-                *token_ptr = token_ptr_backup;
-                temp_tree.root = root;
-                free_tree(temp_tree);
-                return NULL;
-            }
-            if (isdelim(assseq[i])) continue;
-            add_child(root, child);
-        }
-        return root;
-    case TK_ASSOP:
-        for (int i=0; i<1; i++) {
-            root = match(assops[i], token_ptr);
-            if (root) return root;
-        }
-        return NULL;
-    case TK_EXP:
-        for (int i=0; i<3; i++) {
-            root = match(exp_types[i], token_ptr);
-            if (root) return root;
-        }
-        return NULL;
-    case TK_RETST:
-        root = new_node(TK_RETST);
-        for (int i=0; i<3; i++) {
-            child = match(retstseq[i], token_ptr);
-            if (!child) {
-                *token_ptr = token_ptr_backup;
-                temp_tree.root = root;
-                free_tree(temp_tree);
-                return NULL;
-            }
-            if (isdelim(retstseq[i]) || retstseq[i] == TK_RETURN) continue;
-            add_child(root, child);
-        }
-        return root;
-    case TK_ID:
-    case TK_NUMBER:
-    case TK_INT:
-    case TK_RETURN:
-    case TK_ASSIGN:
-    case TK_LPAREN:
-    case TK_RPAREN:
-    case TK_LBRACE:
-    case TK_RBRACE:
-    case TK_SEMICOLON:
+    if (type < END_BASICS) {
         if ((*token_ptr)->type != type) return NULL;
-        root = new_node(type);
+        struct ASTNode *root = new_node(type);
         strcpy(root->value, (*token_ptr)->value);
         (*token_ptr) = (*token_ptr)->next;
         return root;
-    default:
+    }
+    if (type < END_SEQ) {
+        struct ASTNode *root = new_node(type);
+        enum TokenType *seq = seqtable[type - TK_FUNCDEF];
+        for (int i=0; seq[i] != END_SEQ; i++) {
+            struct ASTNode *child = match(seq[i], token_ptr);
+            if (!child) {
+                *token_ptr = token_ptr_backup;
+                struct SyntaxTree temp_tree;
+                temp_tree.root = root;
+                free_tree(temp_tree);
+                return NULL;
+            }
+            if (
+                isdelim(seq[i])
+                || type == TK_VARINIT && seq[i] == TK_ASSIGN
+                || type == TK_RETST && seq[i] == TK_RETURN
+            )
+                continue;
+            add_child(root, child);
+        }
+        return root;
+    }
+    if (type < END_CANDS) {
+        enum TokenType *cand = cand_table[type - TK_TYPESPEC];
+        for (int i=0; cand[i] != END_CANDS; i++) {
+            struct ASTNode *root = match(cand[i], token_ptr);
+            if (root) return root;
+        }
         return NULL;
     }
+    if (type < END_REPCANDS) {
+        struct ASTNode *root = new_node(type);
+        struct ASTNode *child;
+        enum TokenType *repcand = repcands_table[type - TK_PROGRAM];
+        while (1) {
+            for (int i=0; repcand[i] != END_REPCANDS; i++) {
+                child = match(repcand[i], token_ptr);
+                if (child) break;
+            }
+            if (!child) break;
+            add_child(root, child);
+        }
+        return root;
+    }
+    return NULL;
 }
 
 struct SyntaxTree parse(struct TokenStream tokens) {
