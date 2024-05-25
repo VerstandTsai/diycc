@@ -2,7 +2,7 @@ INC = ./includes
 SRC = ./src
 
 CC = gcc
-CFLAGS = -I$(INC)
+CFLAGS = -std=c89 -I$(INC)
 RM = rm
 
 all: diycc

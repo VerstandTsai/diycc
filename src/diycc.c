@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 char *read_file(char filename[]) {
-    // Read the whole file into a string
+    /* Read the whole file into a string */
     FILE *fp = fopen(filename, "r");
     fseek(fp, 0, SEEK_END);
     int size = ftell(fp);

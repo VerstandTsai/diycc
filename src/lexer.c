@@ -73,7 +73,7 @@ struct TokenStream lex(char code[]) {
             continue;
         }
         if (isalpha(c)) {
-            // We are reading either a keyword or an identifier
+            /* We are reading either a keyword or an identifier */
             char value[MAX_ID_LENGTH];
             int index = 0;
             while (isalnum(*pos)) {
@@ -82,7 +82,8 @@ struct TokenStream lex(char code[]) {
             }
             value[index] = '\0';
             int iskeyword = 0;
-            for (int i=0; i<END_KEYWORDS-END_SYMBOLS-1; i++) {
+            int i;
+            for (i=0; i<END_KEYWORDS-END_SYMBOLS-1; i++) {
                 if (strcmp(value, keywords[i]) == 0) {
                     append_token(&tokens, new_token(END_SYMBOLS+1+i, value));
                     iskeyword = 1;
@@ -91,7 +92,7 @@ struct TokenStream lex(char code[]) {
             }
             if (!iskeyword) append_token(&tokens, new_token(TK_ID, value));
         } else if (isdigit(c)) {
-            // We are reading a number literal
+            /* We are reading a number literal */
             char value[MAX_ID_LENGTH];
             int index = 0;
             while (isdigit(*pos)) {
@@ -101,13 +102,16 @@ struct TokenStream lex(char code[]) {
             value[index] = '\0';
             append_token(&tokens, new_token(TK_NUMBER, value));
         } else {
-            // We are reading symbols
-            // This is going to be different than the previous two types
-            // because we cannot reliably determine the end of a symbol token,
-            // so we will instead compare each possible tokens
-            // with our code at the current position.
+            /*
+             * We are reading symbols
+             * This is going to be different than the previous two types
+             * because we cannot reliably determine the end of a symbol token,
+             * so we will instead compare each possible tokens
+             * with our code at the current position.
+             */
             int isunknown = 1;
-            for (int i=0; i<END_SYMBOLS; i++) {
+            int i;
+            for (i=0; i<END_SYMBOLS; i++) {
                 int symbol_length = strlen(symbols[i]);
                 if (strncmp(pos, symbols[i], symbol_length) == 0) {
                     append_token(&tokens, new_token(i, symbols[i]));

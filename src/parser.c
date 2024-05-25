@@ -156,7 +156,8 @@ void print_tree(struct SyntaxTree tree) {
         current = current->next_sibling;
     }
     printf("\n");
-    for (int i=0; i<num_child; i++) {
+    int i;
+    for (i=0; i<num_child; i++) {
         struct SyntaxTree temp;
         temp.root = children[i];
         print_tree(temp);
@@ -189,7 +190,8 @@ struct ASTNode *match(enum TokenType type, struct Token **token_ptr) {
     if (type < END_SEQ) {
         struct ASTNode *root = new_node(type);
         enum TokenType *seq = seqtable[type - TK_FUNCDEF];
-        for (int i=0; seq[i] != END_SEQ; i++) {
+        int i;
+        for (i=0; seq[i] != END_SEQ; i++) {
             struct ASTNode *child = match(seq[i], token_ptr);
             if (!child) {
                 *token_ptr = token_ptr_backup;
@@ -210,7 +212,8 @@ struct ASTNode *match(enum TokenType type, struct Token **token_ptr) {
     }
     if (type < END_CANDS) {
         enum TokenType *cand = cand_table[type - TK_TYPESPEC];
-        for (int i=0; cand[i] != END_CANDS; i++) {
+        int i;
+        for (i=0; cand[i] != END_CANDS; i++) {
             struct ASTNode *root = match(cand[i], token_ptr);
             if (root) return root;
         }
@@ -221,7 +224,8 @@ struct ASTNode *match(enum TokenType type, struct Token **token_ptr) {
         struct ASTNode *child;
         enum TokenType *repcand = repcands_table[type - TK_PROGRAM];
         while (1) {
-            for (int i=0; repcand[i] != END_REPCANDS; i++) {
+            int i;
+            for (i=0; repcand[i] != END_REPCANDS; i++) {
                 child = match(repcand[i], token_ptr);
                 if (child) break;
             }

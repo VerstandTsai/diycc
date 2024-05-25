@@ -21,5 +21,5 @@ void free_tree(struct SyntaxTree tree);
 void print_tree(struct SyntaxTree tree);
 struct SyntaxTree parse(struct TokenStream tokens);
 
-#endif // PARSER_H
+#endif /* PARSER_H */
 

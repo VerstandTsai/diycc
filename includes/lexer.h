@@ -4,12 +4,12 @@
 #define MAX_ID_LENGTH 32
 
 enum TokenType {
-    TK_ASSIGN, // '='
-    TK_SEMICOLON, // ';'
-    TK_LPAREN, // '('
-    TK_RPAREN, // ')'
-    TK_LBRACE, // '{'
-    TK_RBRACE, // '}'
+    TK_ASSIGN, /* '=' */
+    TK_SEMICOLON, /* ';' */
+    TK_LPAREN, /* '(' */
+    TK_RPAREN, /* ')' */
+    TK_LBRACE, /* '{' */
+    TK_RBRACE, /* '}' */
     END_SYMBOLS,
 
     TK_INT,
@@ -20,19 +20,19 @@ enum TokenType {
     TK_NUMBER,
     END_BASICS,
 
-    TK_FUNCDEF, // 'int func() {}'
-    TK_EXPRST, // 'a = b;'
-    TK_VARDEC, // 'int a;'
-    TK_VARINIT, // 'int a = 0;'
-    TK_ASSIGNMENT, // 'a = b'
-    TK_RETST, // 'return a;'
+    TK_FUNCDEF, /* 'int func() {}' */
+    TK_EXPRST, /* 'a = b;' */
+    TK_VARDEC, /* 'int a;' */
+    TK_VARINIT, /* 'int a = 0;' */
+    TK_ASSIGNMENT, /* 'a = b' */
+    TK_RETST, /* 'return a;' */
     END_SEQ,
 
     TK_TYPESPEC,
     TK_STATEMENT,
-    TK_EXPR, // Things that return a value
-    TK_VAR, // Things that can both return and receive a value
-    TK_ASSOP, // '=', '+=', '*=' etc.
+    TK_EXPR, /* Things that return a value */
+    TK_VAR, /* Things that can both return and receive a value */
+    TK_ASSOP, /* '=', '+=', '*=' etc. */
     END_CANDS,
 
     TK_PROGRAM,
@@ -65,5 +65,5 @@ enum LexerError {
 void lexer_error(enum LexerError error);
 struct TokenStream lex(char code[]);
 
-#endif // LEXER_H
+#endif /* LEXER_H */
 
