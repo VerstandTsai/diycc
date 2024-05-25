@@ -70,7 +70,8 @@ enum TokenType funcseq[] = {
 
 enum TokenType exprstseq[] = {
     TK_EXPR,
-    TK_SEMICOLON
+    TK_SEMICOLON,
+    END_SEQ
 };
 
 enum TokenType vardecseq[] = {
