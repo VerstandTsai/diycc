@@ -26,14 +26,14 @@ enum TokenType typespec_cands[] = {
 };
 
 enum TokenType statement_cands[] = {
+    TK_EXPRST,
     TK_VARDEC,
     TK_VARINIT,
-    TK_ASSIGNMENT,
     TK_RETST,
     END_CANDS
 };
 
-enum TokenType exp_cands[] = {
+enum TokenType expr_cands[] = {
     TK_VAR,
     TK_NUMBER,
     END_CANDS
@@ -52,7 +52,7 @@ enum TokenType assop_cands[] = {
 enum TokenType *cand_table[] = {
     typespec_cands,
     statement_cands,
-    exp_cands,
+    expr_cands,
     var_cands,
     assop_cands
 };
@@ -66,6 +66,11 @@ enum TokenType funcseq[] = {
     TK_BLOCK,
     TK_RBRACE,
     END_SEQ
+};
+
+enum TokenType exprstseq[] = {
+    TK_EXPR,
+    TK_SEMICOLON
 };
 
 enum TokenType vardecseq[] = {
@@ -88,7 +93,6 @@ enum TokenType assseq[] = {
     TK_VAR,
     TK_ASSOP,
     TK_EXPR,
-    TK_SEMICOLON,
     END_SEQ
 };
 
@@ -101,6 +105,7 @@ enum TokenType retstseq[] = {
 
 enum TokenType *seqtable[] = {
     funcseq,
+    exprstseq,
     vardecseq,
     varinitseq,
     assseq,

@@ -21,6 +21,7 @@ enum TokenType {
     END_BASICS,
 
     TK_FUNCDEF, // 'int func() {}'
+    TK_EXPRST, // 'a = b;'
     TK_VARDEC, // 'int a;'
     TK_VARINIT, // 'int a = 0;'
     TK_ASSIGNMENT, // 'a = b'
