@@ -29,13 +29,13 @@ enum TokenType {
 
     TK_TYPESPEC,
     TK_STATEMENT,
-    TK_EXP, // Things that return a value
+    TK_EXPR, // Things that return a value
     TK_VAR, // Things that can both return and receive a value
     TK_ASSOP, // '=', '+=', '*=' etc.
     END_CANDS,
 
     TK_PROGRAM,
-    TK_BODY,
+    TK_BLOCK,
     END_REPCANDS
 };
 

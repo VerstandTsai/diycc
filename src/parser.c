@@ -10,14 +10,14 @@ enum TokenType prog_repcands[] = {
     END_REPCANDS
 };
 
-enum TokenType body_repcands[] = {
+enum TokenType block_repcands[] = {
     TK_STATEMENT,
     END_REPCANDS
 };
 
 enum TokenType *repcands_table[] = {
     prog_repcands,
-    body_repcands
+    block_repcands
 };
 
 enum TokenType typespec_cands[] = {
@@ -63,7 +63,7 @@ enum TokenType funcseq[] = {
     TK_LPAREN,
     TK_RPAREN,
     TK_LBRACE,
-    TK_BODY,
+    TK_BLOCK,
     TK_RBRACE,
     END_SEQ
 };
@@ -79,7 +79,7 @@ enum TokenType varinitseq[] = {
     TK_TYPESPEC,
     TK_ID,
     TK_ASSIGN,
-    TK_EXP,
+    TK_EXPR,
     TK_SEMICOLON,
     END_SEQ
 };
@@ -87,14 +87,14 @@ enum TokenType varinitseq[] = {
 enum TokenType assseq[] = {
     TK_VAR,
     TK_ASSOP,
-    TK_EXP,
+    TK_EXPR,
     TK_SEMICOLON,
     END_SEQ
 };
 
 enum TokenType retstseq[] = {
     TK_RETURN,
-    TK_EXP,
+    TK_EXPR,
     TK_SEMICOLON,
     END_SEQ
 };
