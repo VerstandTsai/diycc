@@ -34,6 +34,7 @@ enum TokenType statement_cands[] = {
 };
 
 enum TokenType expr_cands[] = {
+    TK_ASSIGNMENT,
     TK_VAR,
     TK_NUMBER,
     END_CANDS
