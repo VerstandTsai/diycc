@@ -1,8 +1,22 @@
 #include "lexer.h"
 #include "parser.h"
+#include "codegen.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+void extract_name(char path[], char out[]) {
+    char *slash = strrchr(path, '/');
+    char *dot = strrchr(path, '.');
+    char *ptr;
+    int i = 0;
+    for (ptr = ++slash; ptr != dot; ptr++) {
+        out[i] = *ptr;
+        i++;
+    }
+    out[i] = '\0';
+}
 
 char *read_file(char filename[]) {
     /* Read the whole file into a string */
@@ -16,23 +30,26 @@ char *read_file(char filename[]) {
     return buffer;
 }
 
-void compile(char code[]) {
-    struct TokenStream tokens = lex(code);
-    print_tokens(tokens);
-    struct SyntaxTree ast = parse(tokens);
-    print_tree(ast);
-    free_tree(ast);
-    free_tokens(tokens);
-}
-
 int main(int argc, char *argv[]) {
     if (argc < 2) {
         printf("Please give the target file name.\n");
         return 1;
     }
-    char *code = read_file(argv[1]);
-    compile(code);
-    free(code);
+
+    char *source = read_file(argv[1]);
+    struct TokenStream tokens = lex(source);
+    free(source);
+    print_tokens(tokens);
+
+    struct SyntaxTree ast = parse(tokens);
+    free_tokens(tokens);
+    print_tree(ast);
+
+    char outname[32];
+    extract_name(argv[1], outname);
+    gencode(ast, outname);
+
+    free_tree(ast);
     return 0;
 }
 
