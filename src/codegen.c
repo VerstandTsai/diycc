@@ -1,7 +1,7 @@
 #include "codegen.h"
+#include "parser.h"
 #include <stdio.h>
 
-void gencode(struct SyntaxTree ast, char destfile[]) {
-    FILE *code = fopen(destfile, "w");
+void gencode(struct ASTNode *ast, FILE *fp) {
 }
 

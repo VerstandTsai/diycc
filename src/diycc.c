@@ -41,13 +41,15 @@ int main(int argc, char *argv[]) {
     free(source);
     print_tokens(tokens);
 
-    struct SyntaxTree ast = parse(tokens);
+    struct ASTNode *ast = parse(tokens);
     free_tokens(tokens);
     print_tree(ast);
 
     char outname[32];
     extract_name(argv[1], outname);
-    gencode(ast, outname);
+    FILE *fp = fopen(outname, "w");
+    gencode(ast, fp);
+    fclose(fp);
 
     free_tree(ast);
     return 0;

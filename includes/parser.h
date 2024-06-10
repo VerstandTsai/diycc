@@ -11,15 +11,11 @@ struct ASTNode {
     struct ASTNode *next_sibling;
 };
 
-struct SyntaxTree {
-    struct ASTNode *root;
-};
-
 struct ASTNode *new_node(enum TokenType type);
 void add_child(struct ASTNode *node, struct ASTNode *child);
-void free_tree(struct SyntaxTree tree);
-void print_tree(struct SyntaxTree tree);
-struct SyntaxTree parse(struct TokenStream tokens);
+void free_tree(struct ASTNode *root);
+void print_tree(struct ASTNode *tree);
+struct ASTNode *parse(struct TokenStream tokens);
 
 #endif /* PARSER_H */
 

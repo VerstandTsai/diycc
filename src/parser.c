@@ -134,22 +134,20 @@ void add_child(struct ASTNode *node, struct ASTNode *child) {
     node->last_child = node->last_child->next_sibling;
 }
 
-void free_tree(struct SyntaxTree tree) {
-    struct ASTNode *current = tree.root->fisrt_child;
+void free_tree(struct ASTNode *root) {
+    struct ASTNode *current = root->fisrt_child;
     while (current) {
         struct ASTNode *temp = current->next_sibling;
-        struct SyntaxTree subtree;
-        subtree.root = current;
-        free_tree(subtree);
+        free_tree(current);
         current = temp;
     }
-    free(tree.root);
+    free(root);
 }
 
-void print_tree(struct SyntaxTree tree) {
-    struct ASTNode *current = tree.root->fisrt_child;
+void print_tree(struct ASTNode *root) {
+    struct ASTNode *current = root->fisrt_child;
     if (!current) return;
-    printf("[%d, %s] -> ", tree.root->type, tree.root->value);
+    printf("[%d, %s] -> ", root->type, root->value);
     struct ASTNode *children[32];
     int num_child = 0;
     while (current) {
@@ -159,11 +157,8 @@ void print_tree(struct SyntaxTree tree) {
     }
     printf("\n");
     int i;
-    for (i=0; i<num_child; i++) {
-        struct SyntaxTree temp;
-        temp.root = children[i];
-        print_tree(temp);
-    }
+    for (i=0; i<num_child; i++)
+        print_tree(children[i]);
 }
 
 int isdelim(enum TokenType type) {
@@ -197,9 +192,7 @@ struct ASTNode *match(enum TokenType type, struct Token **token_ptr) {
             struct ASTNode *child = match(seq[i], token_ptr);
             if (!child) {
                 *token_ptr = token_ptr_backup;
-                struct SyntaxTree temp_tree;
-                temp_tree.root = root;
-                free_tree(temp_tree);
+                free_tree(root);
                 return NULL;
             }
             if (
@@ -239,9 +232,7 @@ struct ASTNode *match(enum TokenType type, struct Token **token_ptr) {
     return NULL;
 }
 
-struct SyntaxTree parse(struct TokenStream tokens) {
-    struct SyntaxTree tree;
-    tree.root = match(TK_PROGRAM, &tokens.head);
-    return tree;
+struct ASTNode *parse(struct TokenStream tokens) {
+    return match(TK_PROGRAM, &tokens.head);
 }
 
