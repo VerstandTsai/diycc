@@ -1,4 +1,4 @@
-INC = ./includes
+INC = ./include
 SRC = ./src
 
 CC = gcc
@@ -7,7 +7,7 @@ RM = rm
 
 all: diycc
 
-diycc: lexer.o parser.o
+diycc: lexer.o parser.o codegen.o
 	$(CC) $(CFLAGS) -o $@ $(SRC)/diycc.c $^
 
 %.o: $(SRC)/%.c $(INC)/%.h
